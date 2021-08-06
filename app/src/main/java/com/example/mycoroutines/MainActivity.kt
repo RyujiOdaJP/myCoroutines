@@ -2,18 +2,28 @@ package com.example.mycoroutines
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
 import kotlin.coroutines.EmptyCoroutineContext
 
 class MainActivity : AppCompatActivity() {
+    val coroutineScope = CoroutineScope(EmptyCoroutineContext)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         main()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        coroutineScope.cancel() // 1つ目も2つ目もキャンセル
+    }
+
+    override fun onPause() {
+        super.onPause()
+        coroutineScope.cancel() // 1つ目も2つ目もキャンセル
+    }
+
 
     //    runBlockingは新しいCoroutineScopeを作成し、その中で起動された全てのCoroutineが完了するまで処理をブロックします
     fun main() {
@@ -28,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 //                println("3")
 //            }
 //        }
-        val coroutineScope = CoroutineScope(EmptyCoroutineContext)
+
         coroutineScope.launch {
             println("11")
             delay(1000L)
@@ -36,7 +46,12 @@ class MainActivity : AppCompatActivity() {
         }
         coroutineScope.launch {
             println("33")
+            delay(1000L)
+            println("44")
+            delay(1000L)
+            println("55")
         }
-        Thread.sleep(2000L) // 処理が完了するまで待機
+
+        // Thread.sleep(2000L) // 処理が完了するまで待機
     }
 }
