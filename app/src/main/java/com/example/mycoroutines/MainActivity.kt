@@ -43,13 +43,24 @@ class MainActivity : AppCompatActivity() {
             println("11")
             delay(1000L)
             println("22")
+            delay(1000L)
+            println("33")
         }
         coroutineScope.launch {
-            println("33")
+            println("111")
             delay(1000L)
-            println("44")
+            println("222")
             delay(1000L)
-            println("55")
+            println("333")
+
+            //子Coroutine Scope
+            launch {
+                println("1111")
+                delay(1000L)
+                println("2222")
+                delay(1000L)
+                println("3333")
+            }
         }
 
         // Thread.sleep(2000L) // 処理が完了するまで待機
