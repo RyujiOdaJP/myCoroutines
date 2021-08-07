@@ -50,9 +50,20 @@ class MainActivity : AppCompatActivity() {
                 println("job2 end")
             }
 
+            val differed1 = async{
+                fetchData()
+            }
+
+            val differed2 = async {
+                fetchData()
+            }
+
+
             kotlin.run {
-                job1
-                job2
+                // 複数同時にlaunchすることで、並行に動作させることはできますが、
+                // 待ち合わせ時に各々の結果の値を使うことができません。
+                println("differed1 + differed2 is ${differed1.await() + differed2.await()}")
+
             }
             // join をつけない場合またずにall endは実行される
             //println("all end")
@@ -75,6 +86,10 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    suspend fun fetchData(): Int {
+        delay(1000L)
+        return 3
+    }
 //    fun job1(scope: CoroutineScope) = scope.launch {
 //        println("11")
 //        delay(1000L)
