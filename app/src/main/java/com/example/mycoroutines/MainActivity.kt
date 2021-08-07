@@ -27,42 +27,29 @@ class MainActivity : AppCompatActivity() {
 
     //    runBlockingは新しいCoroutineScopeを作成し、その中で起動された全てのCoroutineが完了するまで処理をブロックします
     fun main() {
-//        runBlocking {
-//            // 複数回launchすることで、それらの処理は並行して動作します。
-//            launch {
-//                println("1")
-//                delay(1000L)
-//                println("2")
-//            }
-//            launch {
-//                println("3")
-//            }
-//        }
-
-        coroutineScope.launch {
-            println("11")
-            delay(1000L)
-            println("22")
-            delay(1000L)
-            println("33")
-        }
-        coroutineScope.launch {
-            println("111")
-            delay(1000L)
-            println("222")
-            delay(1000L)
-            println("333")
-
-            //子Coroutine Scope
-            launch {
-                println("1111")
+        runBlocking {
+            fun job1() = launch {
+                println("11")
                 delay(1000L)
-                println("2222")
+                println("22")
                 delay(1000L)
-                println("3333")
+                println("job1 end")
             }
-        }
+            fun job2() = launch {
+                println("111")
+                delay(1000L)
+                println("222")
+                delay(1000L)
+                println("job2 end")
+            }
+            kotlin.run {
+                job1()
+                job2()
+            }.join()
+            // join をつけない場合またずにall endは実行される
+            println("all end")
 
-        // Thread.sleep(2000L) // 処理が完了するまで待機
+            // Thread.sleep(2000L) // 処理が完了するまで待機
+        }
     }
 }
