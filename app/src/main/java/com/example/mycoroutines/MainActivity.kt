@@ -12,8 +12,10 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 //        coroutineExample()
-        completableJob(Job())
+//        completableJob(Job())
+        emptyContext(EmptyCoroutineContext)
     }
+
 
     override fun onDestroy() {
         super.onDestroy()
