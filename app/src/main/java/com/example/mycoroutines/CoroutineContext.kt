@@ -57,9 +57,20 @@ fun compositeContext(view: TextView?) {
     val scope = CoroutineScope(context)
     scope.launch {
         try {
+
+            launch {
+                // 子CoroutineもUIスレッド(contextは伝搬する)
+                delay(1000L)
+                println("child")
+            }
+            withContext(Dispatchers.Default) {
+                // contextを途中で変える（BackgroundThread）
+                delay(1000L)
+                println("child BackgroundThread")
+            }
             // UIスレッドで実行
             delay(1000L)
-            println("Hello, World!")
+            println("parent!")
             view?.text = "executed on UI Thread" // 監視されてないから変わらない
         } catch (e: Throwable) {
             e.message?.let { Log.e("compositeContext", it) }
