@@ -2,6 +2,7 @@ package com.example.mycoroutines
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.navigation.findNavController
 import kotlinx.coroutines.*
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -13,7 +14,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 //        coroutineExample()
 //        completableJob(Job())
-        emptyContext(EmptyCoroutineContext)
+//        emptyContext(EmptyCoroutineContext)
+//        compositeContext()
     }
 
 

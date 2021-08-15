@@ -1,5 +1,8 @@
 package com.example.mycoroutines
 
+import android.util.Log
+import android.view.View
+import android.widget.TextView
 import kotlinx.coroutines.*
 import kotlin.coroutines.EmptyCoroutineContext
 
@@ -46,5 +49,23 @@ fun emptyContext(context: EmptyCoroutineContext) {
     // scope単位でのキャンセルは可能 scope1.cancel()
     context.cancel()
     Thread.sleep(2000L)
+}
+
+//CoroutineContextは+を使うことで合成することができます。
+fun compositeContext(view: TextView?) {
+    val context = Dispatchers.Main + Job()
+    val scope = CoroutineScope(context)
+    scope.launch {
+        try {
+            // UIスレッドで実行
+            delay(1000L)
+            println("Hello, World!")
+            view?.text = "executed on UI Thread" // 監視されてないから変わらない
+        } catch (e: Throwable) {
+            e.message?.let { Log.e("compositeContext", it) }
+        }
+
+    }
+    //context.cancel() // キャンセルもできる
 }
 
