@@ -13,7 +13,8 @@ class TestFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View = FragmentTestBinding.inflate(inflater, container, false).apply {
-        compositeContext(view?.findViewById(R.id.textView))
+        //compositeContext(view?.findViewById(R.id.textView))
+        childHasNewJob()
     }.root
 
 }

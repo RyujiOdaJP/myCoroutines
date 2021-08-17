@@ -79,4 +79,21 @@ fun compositeContext(view: TextView?) {
     }
     //context.cancel() // キャンセルもできる
 }
+fun childHasNewJob() {
+    val context = Job()
+    val scope = CoroutineScope(context)
+    scope.launch(Job()) { // 新しいJobを持った子CoroutineScope
+        delay(1000L)
+        println("1")
+    }
+    scope.launch { // 親のJobを引き継いだCoroutineScope
+        delay(1000L)
+        println("2")
+    }
+    // 親のJobを引き継いだCoroutineScopeのみキャンセル
+    context.cancel()
+    scope.cancel()
+    Thread.sleep(2000L)
+}
+
 
