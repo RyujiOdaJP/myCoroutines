@@ -14,7 +14,8 @@ class TestFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View = FragmentTestBinding.inflate(inflater, container, false).apply {
         //compositeContext(view?.findViewById(R.id.textView))
-        childHasNewJob()
+//        childHasNewJob()
+        nonCancelable()
     }.root
 
 }

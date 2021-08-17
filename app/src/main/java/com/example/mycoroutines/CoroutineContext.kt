@@ -96,4 +96,19 @@ fun childHasNewJob() {
     Thread.sleep(2000L)
 }
 
-
+fun nonCancelable() {
+    val context = Job()
+    val scope = CoroutineScope(context)
+    scope.launch(NonCancellable) {  // キャンセル不可能なCoroutineScope
+        delay(1000L)
+        println("1")
+    }
+    scope.launch { // 親のJobを引き継いだCoroutineScope
+        delay(1000L)
+        println("2")
+    }
+    // NonCancellableはキャンセルされない
+    context.cancel()
+    scope.cancel()
+    Thread.sleep(2000L)
+}
