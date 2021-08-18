@@ -112,3 +112,24 @@ fun nonCancelable() {
     scope.cancel()
     Thread.sleep(2000L)
 }
+
+fun thread(){
+    val context = Dispatchers.Default
+    val scope = CoroutineScope(context)
+    println("thread1: ${Thread.currentThread().name}")
+
+    scope.launch {
+        println("thread2: ${Thread.currentThread().name}")
+    }
+
+    val context2 = Dispatchers.Main.immediate
+    val scope2 = CoroutineScope(context2)
+
+    println("1")
+    scope2.launch {
+        println("2")
+        delay(100L)
+        println("3")
+    }
+    println("4")
+}

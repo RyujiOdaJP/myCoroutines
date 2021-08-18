@@ -15,7 +15,8 @@ class TestFragment : Fragment() {
     ): View = FragmentTestBinding.inflate(inflater, container, false).apply {
         //compositeContext(view?.findViewById(R.id.textView))
 //        childHasNewJob()
-        nonCancelable()
+//        nonCancelable()
+        thread()
     }.root
 
 }
