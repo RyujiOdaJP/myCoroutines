@@ -114,7 +114,11 @@ fun nonCancelable() {
 }
 
 fun thread(){
-    val context = Dispatchers.Default
+    /*これはJVMでのみで使えるオプションで、IOタスク用のスレッド群から一つ選ばれて実行されます。
+    このスレッド群はDispatchers.Defaultと一部共有されています。そのため、
+    Thread.currentThread().nameはDefaultDispatcherと出力されます。*/
+    val context = Dispatchers.IO
+
     val scope = CoroutineScope(context)
     println("thread1: ${Thread.currentThread().name}")
 
