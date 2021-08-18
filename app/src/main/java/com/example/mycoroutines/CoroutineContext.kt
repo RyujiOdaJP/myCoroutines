@@ -79,6 +79,7 @@ fun compositeContext(view: TextView?) {
     }
     //context.cancel() // キャンセルもできる
 }
+
 fun childHasNewJob() {
     val context = Job()
     val scope = CoroutineScope(context)
@@ -113,7 +114,13 @@ fun nonCancelable() {
     Thread.sleep(2000L)
 }
 
-fun thread(){
+fun thread() {
+    /* 同一Coroutine内であれば、try-catchでエラーハンドリングできることを説明してきました。
+    CoroutineExceptionHandlerは、そこでcatchされなかったエラーを処理することができます。*/
+    val exceptionHandler = CoroutineExceptionHandler { _, e ->
+        println("catch: $e")
+    }
+
     /*これはJVMでのみで使えるオプションで、IOタスク用のスレッド群から一つ選ばれて実行されます。
     このスレッド群はDispatchers.Defaultと一部共有されています。そのため、
     Thread.currentThread().nameはDefaultDispatcherと出力されます。*/
@@ -122,8 +129,24 @@ fun thread(){
     val scope = CoroutineScope(context)
     println("thread1: ${Thread.currentThread().name}")
 
-    scope.launch {
+    scope.launch(exceptionHandler) { // rootにはexceptionHandler指定できる
         println("thread2: ${Thread.currentThread().name}")
+
+        /*
+        * 下記のExceptionがThrowされる
+        * 2021-08-18 10:04:47.175 17902-17927/com.example.mycoroutines I/System.out: catch: java.lang.Exception: error
+        * */
+        throw Exception("error")
+
+        /*
+        * 2021-08-18 10:01:39.261 17773-17798/com.example.mycoroutines E/AndroidRuntime: FATAL EXCEPTION: DefaultDispatcher-worker-1
+        * Process: com.example.mycoroutines, PID: 17773
+        * java.lang.Exception: error
+        * */
+//        withContext(exceptionHandler) { // ここでexceptionHandler指定はできない
+//            delay(1000L)
+//            throw Exception("error")
+//        }
     }
 
     val context2 = Dispatchers.Main.immediate
