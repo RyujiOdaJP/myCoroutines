@@ -160,3 +160,27 @@ fun thread() {
     }
     println("4")
 }
+
+fun errorHandling() {
+    val context = Job()
+    val scope = CoroutineScope(context)
+    scope.launch {
+        try {
+            /*
+            * coroutineScopeやwithContextなどsuspend functionで囲うと、内部で起動した全てのCoroutinesの実行完了を待ってくれるため、
+            * try-catchでエラーを取得することができます。
+            * A suspending function is simply a function that can be paused and resumed at a later time.
+            *  They can execute a long running operation and wait for it to complete without blocking.
+            * */
+            withContext(Dispatchers.Default) {
+                launch {
+                    delay(1000L)
+                    throw Exception("error")
+                }
+            }
+        } catch (e: Throwable) {
+            println("catch: $e")
+        }
+    }
+    Thread.sleep(2000L)
+}

@@ -16,7 +16,8 @@ class TestFragment : Fragment() {
         //compositeContext(view?.findViewById(R.id.textView))
 //        childHasNewJob()
 //        nonCancelable()
-        thread()
+//        thread()
+        errorHandling()
     }.root
 
 }
