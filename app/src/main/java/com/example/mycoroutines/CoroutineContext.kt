@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.View
 import android.widget.TextView
 import kotlinx.coroutines.*
+import javax.security.auth.callback.Callback
 import kotlin.coroutines.EmptyCoroutineContext
 
 fun completableJob(context: CompletableJob) {
@@ -184,3 +185,8 @@ fun errorHandling() {
     }
     Thread.sleep(2000L)
 }
+
+fun getSomething(str: String, callback: (str: String) -> Int) =
+    str.takeIf { it.toIntOrNull() != null }?.let{
+        callback(it) * callback(it)
+    }

@@ -1,6 +1,7 @@
 package com.example.mycoroutines
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,6 +19,9 @@ class TestFragment : Fragment() {
 //        nonCancelable()
 //        thread()
         errorHandling()
+        Log.d(getSomething("2") {
+            it.toInt()
+        }.toString(), "8888")
     }.root
 
 }
