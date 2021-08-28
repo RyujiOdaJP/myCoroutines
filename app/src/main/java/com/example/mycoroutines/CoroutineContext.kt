@@ -187,7 +187,7 @@ fun errorHandling() {
 }
 
 fun getSomething(str: String, callback: (str: String) -> Int) =
-    str.takeIf { it.toIntOrNull() != null }?.let{
+    str.takeIf { it.toIntOrNull() != null }?.let {
         callback(it) * callback(it)
     }
 
@@ -206,4 +206,30 @@ fun async() {
         println("result: ${differed.await()}")
     }
     Thread.sleep(2000L)
+}
+
+/**
+ * 渡したsuspend functionをretryする
+ *
+ * @retries 最大試行回数
+ * @intervalMills 施行間隔
+ *
+ * @return 最大試行回数を超過した場合はnullを返す
+ */
+suspend fun <T> retryOrNull(
+    retries: Int,
+    intervalMills: Long = 1000L,
+    block: suspend () -> T
+): T? {
+    repeat(retries) {
+        try {
+            return block()
+        } catch (e: Throwable) {
+            delay(intervalMills)
+        } catch (e: CancellationException) {
+            // キャンセル時は再スローする
+            throw e
+        }
+    }
+    return null
 }

@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.mycoroutines.databinding.FragmentTestBinding
+import kotlinx.coroutines.launch
 
 class TestFragment : Fragment() {
     override fun onCreateView(
@@ -22,7 +24,12 @@ class TestFragment : Fragment() {
 //        Log.d(getSomething("2") {
 //            it.toInt()
 //        }.toString(), "8888")
-        async()
-    }.root
+//        async()
+lifecycleScope.launch {
+    retryOrNull(10, 1000L){
+        fetchData()
+    }
+}
 
+    }.root
 }
