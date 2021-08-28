@@ -18,10 +18,11 @@ class TestFragment : Fragment() {
 //        childHasNewJob()
 //        nonCancelable()
 //        thread()
-        errorHandling()
-        Log.d(getSomething("2") {
-            it.toInt()
-        }.toString(), "8888")
+//        errorHandling()
+//        Log.d(getSomething("2") {
+//            it.toInt()
+//        }.toString(), "8888")
+        async()
     }.root
 
 }

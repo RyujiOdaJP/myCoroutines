@@ -190,3 +190,20 @@ fun getSomething(str: String, callback: (str: String) -> Int) =
     str.takeIf { it.toIntOrNull() != null }?.let{
         callback(it) * callback(it)
     }
+
+fun async() {
+    val context = Job()
+    val scope = CoroutineScope(context)
+    val differed = scope.async {
+        try {
+            delay(1000)
+            throw Exception("error")
+        } catch (e: Throwable) {
+            e.message
+        }
+    }
+    scope.launch {
+        println("result: ${differed.await()}")
+    }
+    Thread.sleep(2000L)
+}
