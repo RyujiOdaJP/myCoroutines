@@ -37,6 +37,8 @@ lifecycleScope.launch {
     },
         {fetchData()}
     )
+
+    fetchBoth()
 }
     }.root
 }

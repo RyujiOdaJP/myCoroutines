@@ -1,5 +1,6 @@
 package com.example.mycoroutines
 
+import android.util.Log
 import kotlinx.coroutines.*
 
 //    runBlockingは新しいCoroutineScopeを作成し、その中で起動された全てのCoroutineが完了するまで処理をブロックします
@@ -65,8 +66,23 @@ fun coroutineExample() {
 
 suspend fun fetchData(): Int {
     delay(1000L)
-    return 3
+    return 3.also{Log.d("fetch", it.toString())}
 }
+suspend fun fetchData1(): Int {
+    delay(1000L)
+    return 1
+}
+suspend fun fetchData2(): Int {
+    delay(1000L)
+    return 2
+}
+
+suspend fun fetchBoth(): Pair<Int, Int> =
+    coroutineScope {
+        val d1 = async { fetchData1() }
+        val d2 = async { fetchData2() }
+        d1.await() to d2.await()
+    }.also { Log.d("both", it.toString()) }
 //    fun job1(scope: CoroutineScope) = scope.launch {
 //        println("11")
 //        delay(1000L)
