@@ -233,3 +233,21 @@ suspend fun <T> retryOrNull(
     }
     return null
 }
+
+suspend fun <T> retryUntilTrueOrNull(
+    retries: Int,
+    predicate: suspend (cause: Throwable) -> Boolean = { true },
+    block: suspend () -> T
+): T? {
+    repeat(retries) {
+        try {
+            return block()
+        } catch (e: Throwable) {
+            if(!predicate(e)) return null
+        } catch (e: CancellationException) {
+            // キャンセル時は再スローする
+            throw e
+        }
+    }
+    return null
+}
